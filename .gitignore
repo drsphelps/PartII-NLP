@@ -4,3 +4,10 @@ NLPenvV2
 data
 
 *.data
+
+.idea
+*.pyc
+__pycache__/
+
+svm_classify
+svm_learn
