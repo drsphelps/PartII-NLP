@@ -1,21 +1,23 @@
 import os
 
 config = {
-    "stem": False,
+    "stem": True,
     "bigrams": False,
     "unigram_bigrams": False,
     "presence": False,
-    "cutoffs": False,
 }
 
 pos_dir = "./../data/POS/STEMMED" if config["stem"] else "./../data/POS"
 neg_dir = "./../data/NEG/STEMMED" if config["stem"] else "./../data/NEG"
+
+file_ending = ".tag_STM" if config['stem'] else ".tag"
 
 def get_unigrams_from_file(path):
     features = []
     with open(path) as file:
         features.extend([f.lower() for f in file.read().split("\n") if f != ''])
     return features
+
 
 def get_bigrams_from_file(path):
     unigrams = get_unigrams_from_file(path)
@@ -27,9 +29,11 @@ def get_bigrams_from_file(path):
 
     return bigrams
 
+
 def get_both_from_file(path):
     features = get_unigrams_from_file(path) + get_bigrams_from_file(path)
     return features
+
 
 def get_all_files(pos_list, neg_list, extractor):
     features = []
@@ -41,9 +45,10 @@ def get_all_files(pos_list, neg_list, extractor):
 
     return features
 
+
 def get_features_from_all():
-    positiveFileList = sorted(list(filter(lambda s: s.endswith(".tag"), os.listdir(pos_dir))))
-    negativeFileList = sorted(list(filter(lambda s: s.endswith(".tag"), os.listdir(neg_dir))))
+    positiveFileList = sorted(list(filter(lambda s: s.endswith(file_ending), os.listdir(pos_dir))))
+    negativeFileList = sorted(list(filter(lambda s: s.endswith(file_ending), os.listdir(neg_dir))))
 
     features = []
 

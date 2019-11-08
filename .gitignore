@@ -9,5 +9,5 @@ data
 *.pyc
 __pycache__/
 
-svm_classify
-svm_learn
+*/svm_classify
+*/svm_learn

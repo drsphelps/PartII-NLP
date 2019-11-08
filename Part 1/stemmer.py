@@ -1,6 +1,9 @@
 import os
 from nltk.stem import PorterStemmer
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 ps = PorterStemmer()
 pos_folder = "./../data/POS/"
@@ -11,9 +14,9 @@ neg_files = sorted(list(filter(lambda s: s.endswith(".tag"), os.listdir(neg_fold
 
 
 def stem_files(file_list, folder):
-    for positive_file in file_list:
-        with open(folder + positive_file, "r") as read_file:
-            with open(folder + "STEMMED/" + positive_file + "_STM", "w") as write_file:
+    for f in file_list:
+        with open(folder + f, "r") as read_file:
+            with open(folder + "STEMMED/" + f + "_STM", "w") as write_file:
                 read_line = read_file.readline()
                 while read_line:
                     line = ps.stem(read_line.strip()) + '\n'

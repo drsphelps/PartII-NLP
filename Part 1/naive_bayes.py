@@ -10,9 +10,6 @@ def calculate_smoothed_log_probs(training_set):
     for (sentiment, filename, features) in training_set:
         is_positive = (sentiment == 'POS')
 
-        if config["presence"]:
-            features = list(set(features))
-
         for feature in features:
             if is_positive:
                 total_pos += 1
@@ -38,7 +35,7 @@ def calculate_smoothed_log_probs(training_set):
 
     return log_probs
 
-def class_probs(trainingSet):
+def calc_class_probs(trainingSet):
     pos_count = 0
     neg_count = 0
 
@@ -53,7 +50,7 @@ def class_probs(trainingSet):
 
 def naiveBayes(trainingSet, testSet):
     feature_probs = calculate_smoothed_log_probs(trainingSet)
-    class_probs = class_probs(trainingSet)
+    class_probs = calc_class_probs(trainingSet)
 
     predictions = []
 
@@ -61,16 +58,20 @@ def naiveBayes(trainingSet, testSet):
         pos_prob = log(class_probs[0])
         neg_prob = log(class_probs[1])
 
+        features_seen = []
+
         for s in features:
-            if s not in feature_probs:
-                continue
+            if config['presence']:
+                if s in features_seen:
+                    continue
+                features_seen.append(s)
+            if s in feature_probs:
+                (pos_feature_prob, neg_feature_prob) = feature_probs[s]
 
-            (pos_feature_prob, neg_feature_prob) = feature_probs[s]
+                pos_prob += pos_feature_prob
+                neg_prob += neg_feature_prob
 
-            pos_prob += pos_feature_prob
-            neg_prob += neg_feature_prob
-
-        if (pos_prob >= neg_prob):
+        if pos_prob >= neg_prob:
             predictions.append(("POS", sentiment, file))
         else:
             predictions.append(("NEG", sentiment, file))
