@@ -1,5 +1,5 @@
 from math import ceil
-from cross_validation import get_features_from_all, rr_split
+from cross_validation_part1 import get_features_from_all, rr_split
 from scipy.stats import binom
 import naive_bayes
 import svm_classifier
@@ -57,22 +57,23 @@ def aggregated_cross_val(function):
         full.extend(classification_a)
     return full
 
-results = {}
+if __name__ == "__main__":
+    results = {}
 
-a_full = aggregated_cross_val(naive_bayes.naiveBayes)
-config['presence'] = True
-config['unigram_bigrams'] = True
-b_full = aggregated_cross_val(naive_bayes.naiveBayes)
-results['NB'] = sign_test(b_full, a_full)
+    a_full = aggregated_cross_val(naive_bayes.naiveBayes)
+    config['presence'] = True
+    config['unigram_bigrams'] = True
+    b_full = aggregated_cross_val(naive_bayes.naiveBayes)
+    results['NB'] = sign_test(b_full, a_full)
 
 
-config['presence'] = False
-config['unigram_bigrams'] = False
-a_full = aggregated_cross_val(svm_classifier.svm_classify)
-config['presence'] = True
-config['unigram_bigrams'] = True
-b_full = aggregated_cross_val(svm_classifier.svm_classify)
-results['SVM'] = sign_test(b_full, a_full)
+    config['presence'] = False
+    config['unigram_bigrams'] = False
+    a_full = aggregated_cross_val(svm_classifier.svm_classify)
+    config['presence'] = True
+    config['unigram_bigrams'] = True
+    b_full = aggregated_cross_val(svm_classifier.svm_classify)
+    results['SVM'] = sign_test(b_full, a_full)
 
-print(results)
-# {'NB': 0.08929648432127088, 'SVM': 0.3253010708558339}
+    print(results)
+    # {'NB': 0.08929648432127088, 'SVM': 0.3253010708558339}
