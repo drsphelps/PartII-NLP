@@ -4,9 +4,12 @@ import subprocess
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from gensim.utils import simple_preprocess
 
-def get_words(path):
-    with open(path,'r') as f:
-        words = simple_preprocess(f.read())
+def get_words(path, f=True):
+    if f:
+        with open(path,'r') as f:
+            words = simple_preprocess(f.read())
+    else:
+        words = simple_preprocess(path)
     return words
 
 def train_svm(f, training):
@@ -19,13 +22,13 @@ def train_svm(f, training):
     
     return svmlight.learn(f_training, type='classification')
 
-def predict(f, svm_model, test):
+def predict(f, svm_model, test, w=True):
     d2v_model = Doc2Vec.load(f)
     results = {}
 
     f_test = []
     for (_, path) in test:
-        words = get_words(path)
+        words = get_words(path, w)
         vector = [(i+1, p) for i, p in enumerate(d2v_model.infer_vector(words))]
         f_test.append((0, vector))
 

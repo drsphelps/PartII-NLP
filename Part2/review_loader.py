@@ -1,7 +1,7 @@
 import os
 
 config = {
-    "stem": True,
+    "stem": False,
     "bigrams": False,
     "unigram_bigrams": False,
     "presence": False,

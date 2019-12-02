@@ -7,6 +7,7 @@ def create_feature_set(data):
     index = 1
 
     for d in data:
+        print(index)
         for feature in d[2]:
             if feature not in features:
                 features[feature] = index

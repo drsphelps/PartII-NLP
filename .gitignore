@@ -7,6 +7,8 @@ modelFile*
 __init__.py
 setup.py
 
+amazon_data/
+
 .vscode
 
 *.data

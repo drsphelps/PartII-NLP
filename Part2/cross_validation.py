@@ -1,4 +1,5 @@
 import os
+import pickle
 from doc2vec_classification import train_svm, predict
 
 number_of_partitions = 10
@@ -99,14 +100,13 @@ def test_doc2vec():
 
     return complete_results
 
-if __name__ == '__main__':
-    print("Training")
-    # print(train_doc2vec('modelFile'))
-    r = test_doc2vec()
-    total = 0.0
-    correct = 0.0
-    for k, v in r.items():
-        total += 1.0
-        if v:
-            correct += 1.0
-    print(correct/total)
+def amazon_test():
+    dataset = remove_first(get_all_files())
+    positive = [x for x in dataset if x[0] == 'POS']
+    negative = [x for x in dataset if x[0] == 'NEG']
+    svm_model = train_svm('./modelFile', positive + negative)
+
+
+    print(len(positive+negative))
+
+    return svm_model
